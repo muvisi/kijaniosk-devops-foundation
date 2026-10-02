@@ -1,0 +1,57 @@
+=== KijaniKiosk Pre-Provisioning Audit ===
+Timestamp: 2026-10-02T18:32:33+03:00
+
+=== USERS ===
+
+=== GROUP ===
+
+=== DIRECTORY ===
+
+=== SHARED LOG ACL ===
+
+=== CONFIG ACL ===
+
+=== UFW ===
+Status: inactive
+
+=== PACKAGE HOLDS ===
+
+=== SYSTEMD UNITS ===
+
+=== KK-API SECURITY ===
+
+=== LOG DIRECTORY SIZE ===
+
+=== JOURNAL SIZE ===
+Archived and active journals take up 304M in the file system.
+
+=== INTERPRETATION ===
+The machine is currently clean with respect to KijaniKiosk.
+
+Findings:
+- kk-api, kk-payments and kk-logs service accounts are absent.
+- The kijanikiosk group is absent.
+- /opt/kijanikiosk does not exist.
+- No KijaniKiosk ACL configuration exists.
+- UFW is inactive.
+- No package holds are present.
+- No kk-* systemd units exist.
+- Journal storage currently uses approximately 304 MB.
+
+Because the assessment requires idempotency testing against an existing/dirty environment, controlled partial state will be introduced before running the final provisioning script.
+
+=== CONTROLLED DIRTY STATE INTRODUCED ===
+Because the initial machine was clean, controlled partial state was introduced to test convergence and idempotency.
+
+Dirty conditions:
+- kijanikiosk group already exists.
+- kk-api already exists with UID 997.
+- kk-payments already exists with UID 994.
+- kk-logs is intentionally missing.
+- /opt/kijanikiosk/config has insecure mode 777.
+- /opt/kijanikiosk/shared/logs has an incomplete ACL containing kk-api but not the complete intended access model.
+- UFW is active with a stale external deny rule for port 3001.
+- curl is already held.
+- KijaniKiosk systemd services are not yet installed.
+
+The provisioning script must explicitly detect and converge each of these conditions to the intended production state.

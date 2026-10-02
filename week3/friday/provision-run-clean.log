@@ -1,0 +1,147 @@
+
+============================================================
+PHASE 1: Preflight and Dirty-State Detection
+============================================================
+[2026-10-02 19:14:29] Inspecting existing KijaniKiosk state...
+[2026-10-02 19:14:29] Already exists: group kijanikiosk
+[2026-10-02 19:14:29] Already exists: kk-api (UID 997)
+[2026-10-02 19:14:29] Already exists: kk-payments (UID 994)
+[2026-10-02 19:14:29] Already exists: kk-logs (UID 993)
+[2026-10-02 19:14:29] Existing config directory detected with mode: 750
+[2026-10-02 19:14:29] Config directory permissions already correct
+[2026-10-02 19:14:29] Existing shared log directory detected
+[2026-10-02 19:14:29] Existing ACL detected for kk-api
+[2026-10-02 19:14:29] Existing ACL detected for kk-payments
+[2026-10-02 19:14:29] Existing ACL detected for kk-logs
+[2026-10-02 19:14:29] Detected held package: curl
+[2026-10-02 19:14:29] Detected active UFW configuration
+[2026-10-02 19:14:29] Detected stale/existing port 3001 deny rule
+[2026-10-02 19:14:29] Existing systemd unit detected: kk-api.service
+[2026-10-02 19:14:29] Existing systemd unit detected: kk-payments.service
+[2026-10-02 19:14:29] Existing systemd unit detected: kk-logs.service
+
+============================================================
+PHASE 2: Service Accounts and Groups
+============================================================
+[2026-10-02 19:14:29] Already exists: group kijanikiosk
+[2026-10-02 19:14:29] Already exists: kk-api
+[2026-10-02 19:14:29] Already exists: kk-payments
+[2026-10-02 19:14:29] Already exists: kk-logs
+
+============================================================
+PHASE 3: Directories, Permissions and ACLs
+============================================================
+[2026-10-02 19:14:29] Required KijaniKiosk directories exist
+[2026-10-02 19:14:29] Converged config directory to root:kijanikiosk mode 750
+[2026-10-02 19:14:29] Converged shared log ACL and default ACL
+[2026-10-02 19:14:29] Configured health directory
+
+============================================================
+PHASE 4: Package and Version State
+============================================================
+[2026-10-02 19:14:29] Package already installed: nginx (1.28.3-2ubuntu1.11)
+[2026-10-02 19:14:29] Package already installed: curl (8.18.0-1ubuntu2.7)
+[2026-10-02 19:14:29] Package already installed: acl (2.3.2-2)
+[2026-10-02 19:14:29] Package already installed: logrotate (3.22.0-1build1)
+[2026-10-02 19:14:29] Package already installed: ufw (0.36.2-9build1)
+[2026-10-02 19:14:29] Existing package hold retained: curl
+[2026-10-02 19:14:29] Installed nginx version: 1.28.3-2ubuntu1.11
+[2026-10-02 19:14:29] Installed curl version: 8.18.0-1ubuntu2.7
+
+============================================================
+PHASE 5: Firewall Configuration
+============================================================
+[2026-10-02 19:14:29] Resetting UFW to known baseline
+Backing up 'user.rules' to '/etc/ufw/user.rules.20261002_191430'
+Backing up 'before.rules' to '/etc/ufw/before.rules.20261002_191430'
+Backing up 'after.rules' to '/etc/ufw/after.rules.20261002_191430'
+Backing up 'user6.rules' to '/etc/ufw/user6.rules.20261002_191430'
+Backing up 'before6.rules' to '/etc/ufw/before6.rules.20261002_191430'
+Backing up 'after6.rules' to '/etc/ufw/after6.rules.20261002_191430'
+
+Default incoming policy changed to 'deny'
+(be sure to update your rules accordingly)
+Default outgoing policy changed to 'allow'
+(be sure to update your rules accordingly)
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated (v6)
+Firewall is active and enabled on system startup
+[2026-10-02 19:14:31] UFW converged to intended production rules
+
+============================================================
+PHASE 6: systemd Service Units and Hardening
+============================================================
+[2026-10-02 19:14:31] Creating environment files
+[2026-10-02 19:14:31] Environment files created with mode 640
+[PASS] kk-api can read its EnvironmentFile
+[PASS] kk-payments can read its EnvironmentFile
+[PASS] kk-logs can read its EnvironmentFile
+[2026-10-02 19:14:31] Removed obsolete kk-payments experimental override
+[PASS] kk-api is running
+[PASS] kk-payments is running
+[PASS] kk-logs is running
+
+============================================================
+PHASE 7: Journal Persistence and Log Rotation
+============================================================
+[2026-10-02 19:14:36] Configuring persistent journal storage
+[PASS] Persistent journal directory exists
+[PASS] Persistent journal configured with 500MB cap
+[2026-10-02 19:14:36] Created KijaniKiosk logrotate configuration
+[PASS] logrotate --debug passed
+
+============================================================
+PHASE 8: Monitoring Health Checks and Final Verification
+============================================================
+[2026-10-02 19:14:36] Health check results written to /opt/kijanikiosk/health/last-provision.json
+{"timestamp":"2026-10-02T19:14:36+03:00","kk-api":"ok","kk-payments":"ok"}
+
+============================================================
+FINAL VERIFICATION
+============================================================
+[PASS] Service account exists: kk-api
+[PASS] Service account exists: kk-payments
+[PASS] Service account exists: kk-logs
+[PASS] Group exists: kijanikiosk
+[PASS] Config directory mode is 750
+[PASS] kk-api can read api.env
+[PASS] kk-payments can read payments-api.env
+[PASS] kk-logs can read logs.env
+[PASS] kk-api ACL exists
+[PASS] kk-payments ACL exists
+[PASS] kk-logs ACL exists
+[PASS] Default kk-api ACL exists
+[PASS] Default kk-payments ACL exists
+[PASS] Default kk-logs ACL exists
+[PASS] kk-api service is active
+[PASS] kk-payments service is active
+[PASS] kk-logs service is active
+[PASS] kk-payments declares After=kk-api.service
+[PASS] kk-payments declares Wants=kk-api.service
+[PASS] kk-payments syscall hardening configured
+[PASS] kk-api port 3000 is listening
+[PASS] kk-payments port 3001 is listening
+[PASS] kk-api HTTP health check passed
+[PASS] kk-payments HTTP health check passed
+[PASS] Health JSON exists
+[PASS] kk-logs can read health JSON
+[PASS] Persistent journal storage exists
+[PASS] Journal persistence and 500MB cap verified
+[PASS] logrotate configuration validates
+[PASS] SSH (22) allowed
+[PASS] HTTP (80) allowed
+[PASS] Monitoring subnet rule exists for port 3001
+[PASS] External port 3001 deny exists
+[PASS] curl package hold exists
+
+============================================================
+PROVISIONING RESULT: PASS
+All verification checks passed.
+============================================================
