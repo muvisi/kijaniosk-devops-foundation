@@ -1,0 +1,7 @@
+---
+service_name: kk-api
+service_user: kk-api
+service_description: KijaniKiosk API Service
+service_port: 3000
+service_command: /usr/bin/python3 -m http.server 3000
+environment_file: /opt/kijanikiosk/config/api.env

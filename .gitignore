@@ -1,0 +1,10 @@
+
+# Week 4 local infrastructure
+week4/friday/minio-data/
+week4/friday/minio.log
+week4/friday/terraform/.terraform/
+week4/friday/terraform/*.tfstate
+week4/friday/terraform/*.tfstate.*
+
+# Generated Ansible inventory
+week4/friday/ansible/inventory.ini

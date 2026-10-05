@@ -1,0 +1,231 @@
+==================================================
+ KijaniKiosk Full IaC Pipeline
+==================================================
+
+[1/7] Checking prerequisites...
+Prerequisites OK.
+
+[2/7] Running Terraform...
+[0m[1mInitializing the backend...[0m
+
+[0m[1mInitializing modules...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- terraform.io/builtin/terraform is built in to Terraform
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+[0m[1mmodule.app_server["logs"].terraform_data.server: Refreshing state... [id=0afd30e3-5214-7d64-745e-3a8d0a66d545][0m
+[0m[1mmodule.app_server["payments"].terraform_data.server: Refreshing state... [id=242399df-996c-885d-19db-4f1ca88390ff][0m
+[0m[1mmodule.app_server["api"].terraform_data.server: Refreshing state... [id=e3a70410-e0f8-0543-fdd0-882f91dddc21][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.[0m
+[0m[1m[32m
+Outputs:
+
+[0mserver_names = {
+  "api" = "kijanikiosk-api"
+  "logs" = "kijanikiosk-logs"
+  "payments" = "kijanikiosk-payments"
+}
+ssh_key_name = "id_rsa"
+Terraform complete.
+
+[3/7] Discovering VM addresses...
+API:      10.112.216.232
+Payments: 10.112.216.14
+Logs:     10.112.216.110
+
+[4/7] Preparing SSH access...
+Ensuring SSH key exists on kijanikiosk-api...
+update.go:193: cannot change mount namespace according to change mount (/run/user/1000/doc/by-app/snap.multipass /run/user/1000/doc none bind,rw,x-snapd.ignore-missing 0 0): cannot inspect "/run/user/1000/doc": lstat /run/user/1000/doc: permission denied
+Ensuring SSH key exists on kijanikiosk-payments...
+update.go:193: cannot change mount namespace according to change mount (/run/user/1000/doc/by-app/snap.multipass /run/user/1000/doc none bind,rw,x-snapd.ignore-missing 0 0): cannot inspect "/run/user/1000/doc": lstat /run/user/1000/doc: permission denied
+Ensuring SSH key exists on kijanikiosk-logs...
+update.go:193: cannot change mount namespace according to change mount (/run/user/1000/doc/by-app/snap.multipass /run/user/1000/doc none bind,rw,x-snapd.ignore-missing 0 0): cannot inspect "/run/user/1000/doc": lstat /run/user/1000/doc: permission denied
+
+[5/7] Generating Ansible inventory...
+[api]
+kijanikiosk-api ansible_host=10.112.216.232
+
+[payments]
+kijanikiosk-payments ansible_host=10.112.216.14
+
+[logs]
+kijanikiosk-logs ansible_host=10.112.216.110
+
+[kijanikiosk:children]
+api
+payments
+logs
+
+[kijanikiosk:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/home/mwangangi/.ssh/id_rsa
+ansible_python_interpreter=/usr/bin/python3
+
+[6/7] Running Ansible...
+kijanikiosk-payments | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+kijanikiosk-api | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+kijanikiosk-logs | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+PLAY [Configure KijaniKiosk servers] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-logs]
+
+TASK [Install required packages] ***********************************************
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-api]
+
+TASK [Create KijaniKiosk group] ************************************************
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+
+TASK [Create service account] **************************************************
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-api]
+
+TASK [Create configuration directory] ******************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+
+TASK [Create log directory] ****************************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+
+TASK [Create health directory] *************************************************
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-api]
+
+TASK [Deploy service environment file] *****************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+
+TASK [Deploy systemd service] **************************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-payments]
+
+TASK [Flush systemd handlers] **************************************************
+
+TASK [Flush systemd handlers] **************************************************
+
+TASK [Flush systemd handlers] **************************************************
+
+TASK [Enable and start application service] ************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+
+TASK [Set UFW default incoming policy] *****************************************
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+
+TASK [Set UFW default outgoing policy] *****************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-payments]
+
+TASK [Allow required firewall ports] *******************************************
+ok: [kijanikiosk-api] => (item=22)
+ok: [kijanikiosk-logs] => (item=22)
+ok: [kijanikiosk-payments] => (item=22)
+ok: [kijanikiosk-logs] => (item=80)
+ok: [kijanikiosk-api] => (item=80)
+ok: [kijanikiosk-payments] => (item=80)
+ok: [kijanikiosk-logs] => (item=443)
+ok: [kijanikiosk-api] => (item=443)
+ok: [kijanikiosk-payments] => (item=443)
+ok: [kijanikiosk-logs] => (item=3000)
+ok: [kijanikiosk-api] => (item=3000)
+ok: [kijanikiosk-payments] => (item=3000)
+ok: [kijanikiosk-logs] => (item=3001)
+ok: [kijanikiosk-api] => (item=3001)
+ok: [kijanikiosk-payments] => (item=3001)
+
+TASK [Enable UFW] **************************************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-payments]
+
+TASK [Create journald configuration directory] *********************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-payments]
+
+TASK [Configure persistent journal] ********************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-payments]
+ok: [kijanikiosk-logs]
+
+TASK [Configure KijaniKiosk log rotation] **************************************
+ok: [kijanikiosk-api]
+ok: [kijanikiosk-logs]
+ok: [kijanikiosk-payments]
+
+PLAY RECAP *********************************************************************
+kijanikiosk-api            : ok=17   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+kijanikiosk-logs           : ok=17   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+kijanikiosk-payments       : ok=17   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+[7/7] Validating environment...
+kijanikiosk-api | CHANGED | rc=0 >>
+active
+kijanikiosk-payments | CHANGED | rc=0 >>
+active
+kijanikiosk-logs | CHANGED | rc=0 >>
+active
+
+Checking kk-payments security exposure...
+kk-payments exposure score: 1.1
+Security requirement PASSED (< 2.5).
+
+Checking final Terraform state...
+[0m[1mmodule.app_server["payments"].terraform_data.server: Refreshing state... [id=242399df-996c-885d-19db-4f1ca88390ff][0m
+[0m[1mmodule.app_server["api"].terraform_data.server: Refreshing state... [id=e3a70410-e0f8-0543-fdd0-882f91dddc21][0m
+[0m[1mmodule.app_server["logs"].terraform_data.server: Refreshing state... [id=0afd30e3-5214-7d64-745e-3a8d0a66d545][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+Terraform idempotency check PASSED: no changes.
+
+==================================================
+ KijaniKiosk pipeline completed successfully
+==================================================

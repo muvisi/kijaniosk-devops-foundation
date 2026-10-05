@@ -1,0 +1,7 @@
+---
+service_name: kk-logs
+service_user: kk-logs
+service_description: KijaniKiosk Logging Service
+service_port: 3002
+service_command: /usr/bin/python3 -m http.server 3002
+environment_file: /opt/kijanikiosk/config/logs.env

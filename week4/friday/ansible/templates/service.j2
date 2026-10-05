@@ -1,0 +1,54 @@
+[Unit]
+Description={{ service_description }}
+After=network.target{% if service_dependency is defined %} {{ service_dependency }}{% endif %}
+{% if service_dependency is defined %}
+Wants={{ service_dependency }}
+{% endif %}
+
+[Service]
+Type=simple
+User={{ service_user }}
+Group={{ kijanikiosk_group }}
+EnvironmentFile={{ environment_file }}
+ExecStart={{ service_command }}
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+PrivateUsers=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+ProtectProc=invisible
+ProcSubset=pid
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RemoveIPC=true
+RestrictNamespaces=true
+SystemCallArchitectures=native
+UMask=0077
+
+# Drop Linux capabilities
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+# Only socket families required by the application
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+# Block dangerous syscall classes
+SystemCallFilter=~@clock @debug @module @mount @raw-io @reboot @swap @privileged @resources @cpu-emulation @obsolete
+
+ReadWritePaths={{ log_dir }} {{ health_dir }}
+
+[Install]
+WantedBy=multi-user.target

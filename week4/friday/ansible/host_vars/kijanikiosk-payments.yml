@@ -1,0 +1,8 @@
+---
+service_name: kk-payments
+service_user: kk-payments
+service_description: KijaniKiosk Payments Service
+service_port: 3001
+service_command: /usr/bin/python3 -m http.server 3001
+environment_file: /opt/kijanikiosk/config/payments-api.env
+service_dependency: kk-api.service
