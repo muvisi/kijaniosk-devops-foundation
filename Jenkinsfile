@@ -101,7 +101,6 @@ pipeline {
                                 -w /work \
                                 "$NODE_IMAGE" \
                                 node --test \
-                                    --test-reporter=spec \
                                     --test-reporter=junit \
                                     --test-reporter-destination=test-results.xml
                         '''
