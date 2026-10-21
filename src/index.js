@@ -15,4 +15,13 @@ function createProduct(name, price) {
   };
 }
 
-module.exports = { createProduct };
+function formatProductLabel(product) {
+  if (!product || typeof product.name !== 'string' ||
+      typeof product.price !== 'number') {
+    throw new Error('A valid product is required');
+  }
+
+  return `${product.name} - ${product.price.toFixed(2)}`;
+}
+
+module.exports = { createProduct, formatProductLabel };

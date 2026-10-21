@@ -22,3 +22,12 @@ test('rejects an empty product name', () => {
 test('rejects a negative price', () => {
   assert.throws(() => createProduct('Sugar', -1), /non-negative number/);
 });
+
+test('formats a product label with two decimal places', () => {
+  const { formatProductLabel } = require('../src/index');
+
+  assert.equal(
+    formatProductLabel({ name: 'Maize Flour', price: 125 }),
+    'Maize Flour - 125.00'
+  );
+});
