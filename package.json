@@ -1,0 +1,22 @@
+{
+  "name": "kijanikiosk",
+  "version": "1.0.0",
+  "description": "KijaniKiosk demonstration application for a CI pipeline",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "node --check src/index.js && node --check test/index.test.js",
+    "build": "mkdir -p dist && cp src/index.js dist/index.js && cp package.json dist/package.json",
+    "test": "node --test",
+    "audit": "npm audit --audit-level=high",
+    "prepack": "npm run build"
+  },
+  "files": [
+    "src/",
+    "dist/"
+  ],
+  "engines": {
+    "node": "22.x",
+    "npm": ">=10"
+  },
+  "license": "MIT"
+}
