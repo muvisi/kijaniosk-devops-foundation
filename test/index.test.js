@@ -31,3 +31,12 @@ test('formats a product label with two decimal places', () => {
     'Maize Flour - 125.00'
   );
 });
+
+test('formats a product label with two decimal places', () => {
+  const { formatProductLabel } = require('../src/index');
+
+  assert.equal(
+    formatProductLabel({ name: 'Maize Flour', price: 125 }),
+    'Maize Flour - 125.00'
+  );
+});
