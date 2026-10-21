@@ -2,16 +2,24 @@ pipeline {
     agent any
 
     options {
-        timestamps()
         timeout(time: 10, unit: 'MINUTES')
+        timestamps()
         disableConcurrentBuilds()
     }
 
     parameters {
         choice(
             name: 'FAULT_STAGE',
-            choices: ['None', 'Lint', 'Build', 'Test', 'Security Audit', 'Archive', 'Publish'],
-            description: 'Select a stage to fail deliberately for fault-injection testing.'
+            choices: [
+                'None',
+                'Lint',
+                'Build',
+                'Test',
+                'Security Audit',
+                'Archive',
+                'Publish'
+            ],
+            description: 'Choose a stage for intentional fault injection.'
         )
     }
 
@@ -26,15 +34,19 @@ pipeline {
             steps {
                 script {
                     if (params.FAULT_STAGE == 'Lint') {
-                        error('Fault injection: Lint stage')
+                        error('Intentional fault injection: Lint')
                     }
                 }
+
                 sh '''
                     docker run --rm --network host \
-                      --user "$(id -u):$(id -g)" \
-                      -e HOME=/tmp -e npm_config_cache=/tmp/npm-cache \
-                      -v "$WORKSPACE:/work" -w /work "$NODE_IMAGE" \
-                      npm run lint
+                        --user "$(id -u):$(id -g)" \
+                        -e HOME=/tmp \
+                        -e npm_config_cache=/tmp/npm-cache \
+                        -v "$WORKSPACE:/work" \
+                        -w /work \
+                        "$NODE_IMAGE" \
+                        npm run lint
                 '''
             }
         }
@@ -43,23 +55,29 @@ pipeline {
             steps {
                 script {
                     if (params.FAULT_STAGE == 'Build') {
-                        error('Fault injection: Build stage')
+                        error('Intentional fault injection: Build')
                     }
-                    env.PACKAGE_VERSION = "1.0.0-${env.GIT_COMMIT.take(7)}"
+
+                    env.PACKAGE_VERSION =
+                        "1.0.0-${env.GIT_COMMIT.take(7)}"
                 }
+
                 sh '''
                     docker run --rm --network host \
-                      --user "$(id -u):$(id -g)" \
-                      -e HOME=/tmp -e npm_config_cache=/tmp/npm-cache \
-                      --env PACKAGE_VERSION \
-                      -v "$WORKSPACE:/work" -w /work "$NODE_IMAGE" \
-                      sh -ec '
-                        npm ci
-                        npm version "$PACKAGE_VERSION" --no-git-tag-version
-                        npm run build
-                        mkdir -p artifacts
-                        npm pack --pack-destination artifacts
-                      '
+                        --user "$(id -u):$(id -g)" \
+                        -e HOME=/tmp \
+                        -e npm_config_cache=/tmp/npm-cache \
+                        --env PACKAGE_VERSION \
+                        -v "$WORKSPACE:/work" \
+                        -w /work \
+                        "$NODE_IMAGE" \
+                        sh -ec '
+                            npm ci
+                            npm version "$PACKAGE_VERSION" --no-git-tag-version
+                            npm run build
+                            mkdir -p artifacts
+                            npm pack --pack-destination artifacts
+                        '
                 '''
             }
         }
@@ -70,19 +88,22 @@ pipeline {
                     steps {
                         script {
                             if (params.FAULT_STAGE == 'Test') {
-                                error('Fault injection: Test branch')
+                                error('Intentional fault injection: Test')
                             }
                         }
+
                         sh '''
                             docker run --rm --network host \
-                              --user "$(id -u):$(id -g)" \
-                              -e HOME=/tmp -e npm_config_cache=/tmp/npm-cache \
-                              -v "$WORKSPACE:/work" -w /work "$NODE_IMAGE" \
-                              sh -ec '
-                                npm test
-                                node --test --test-reporter=junit \
-                                  --test-reporter-destination=test-results.xml
-                              '
+                                --user "$(id -u):$(id -g)" \
+                                -e HOME=/tmp \
+                                -e npm_config_cache=/tmp/npm-cache \
+                                -v "$WORKSPACE:/work" \
+                                -w /work \
+                                "$NODE_IMAGE" \
+                                node --test \
+                                    --test-reporter=spec \
+                                    --test-reporter=junit \
+                                    --test-reporter-destination=test-results.xml
                         '''
                     }
                 }
@@ -91,15 +112,19 @@ pipeline {
                     steps {
                         script {
                             if (params.FAULT_STAGE == 'Security Audit') {
-                                error('Fault injection: Security Audit branch')
+                                error('Intentional fault injection: Security Audit')
                             }
                         }
+
                         sh '''
                             docker run --rm --network host \
-                              --user "$(id -u):$(id -g)" \
-                              -e HOME=/tmp -e npm_config_cache=/tmp/npm-cache \
-                              -v "$WORKSPACE:/work" -w /work "$NODE_IMAGE" \
-                              npm audit --audit-level=high
+                                --user "$(id -u):$(id -g)" \
+                                -e HOME=/tmp \
+                                -e npm_config_cache=/tmp/npm-cache \
+                                -v "$WORKSPACE:/work" \
+                                -w /work \
+                                "$NODE_IMAGE" \
+                                npm audit --audit-level=high
                         '''
                     }
                 }
@@ -110,11 +135,14 @@ pipeline {
             steps {
                 script {
                     if (params.FAULT_STAGE == 'Archive') {
-                        error('Fault injection: Archive stage')
+                        error('Intentional fault injection: Archive')
                     }
                 }
-                archiveArtifacts artifacts: 'artifacts/*.tgz',
-                                 fingerprint: true
+
+                archiveArtifacts(
+                    artifacts: 'artifacts/*.tgz',
+                    fingerprint: true
+                )
             }
         }
 
@@ -122,7 +150,7 @@ pipeline {
             steps {
                 script {
                     if (params.FAULT_STAGE == 'Publish') {
-                        error('Fault injection: Publish stage')
+                        error('Intentional fault injection: Publish')
                     }
                 }
 
@@ -135,21 +163,34 @@ pipeline {
                 ]) {
                     sh '''
                         set +x
+
                         docker run --rm --network host \
-                          --user "$(id -u):$(id -g)" \
-                          -e HOME=/tmp -e npm_config_cache=/tmp/npm-cache \
-                          --env NEXUS_USER --env NEXUS_PASSWORD \
-                          --env NEXUS_URL \
-                          --env NEXUS_NPM_REPOSITORY \
-                          -v "$WORKSPACE:/work" -w /work "$NODE_IMAGE" \
-                          sh -ec '
-                            trap "rm -f .npmrc" EXIT
-                            AUTH=$(printf "%s:%s" "$NEXUS_USER" "$NEXUS_PASSWORD" \
-                              | base64 | tr -d "\\n")
-                            printf "//localhost:8081/repository/%s/:_auth=%s\\nalways-auth=true\\n" \
-                              "$NEXUS_NPM_REPOSITORY" "$AUTH" > .npmrc
-                            npm publish --registry="$NEXUS_URL/repository/$NEXUS_NPM_REPOSITORY/"
-                          '
+                            --user "$(id -u):$(id -g)" \
+                            -e HOME=/tmp \
+                            -e npm_config_cache=/tmp/npm-cache \
+                            --env NEXUS_USER \
+                            --env NEXUS_PASSWORD \
+                            --env NEXUS_URL \
+                            --env NEXUS_NPM_REPOSITORY \
+                            -v "$WORKSPACE:/work" \
+                            -w /work \
+                            "$NODE_IMAGE" \
+                            sh -ec '
+                                trap "rm -f .npmrc" EXIT
+
+                                AUTH=$(printf "%s:%s" \
+                                    "$NEXUS_USER" "$NEXUS_PASSWORD" \
+                                    | base64 | tr -d "\\n")
+
+                                printf "%s\\n" \
+                                    "registry=${NEXUS_URL}/repository/${NEXUS_NPM_REPOSITORY}/" \
+                                    "//localhost:8081/repository/${NEXUS_NPM_REPOSITORY}/:always-auth=true" \
+                                    "//localhost:8081/repository/${NEXUS_NPM_REPOSITORY}/:_auth=${AUTH}" \
+                                    > .npmrc
+
+                                npm publish \
+                                    --registry="${NEXUS_URL}/repository/${NEXUS_NPM_REPOSITORY}/"
+                            '
                     '''
                 }
             }
@@ -159,8 +200,12 @@ pipeline {
     post {
         always {
             sh 'rm -f .npmrc'
-            junit testResults: 'test-results.xml',
-                  allowEmptyResults: true
+
+            junit(
+                testResults: 'test-results.xml',
+                allowEmptyResults: true
+            )
+
             echo 'Cleanup and test-result collection completed.'
         }
 
@@ -171,11 +216,11 @@ pipeline {
         }
 
         failure {
-            echo "NOTIFICATION: Pipeline failed. Inspect the failed stage and console log."
+            echo 'FAILURE: Pipeline failed. Check the stage logs above.'
         }
 
         changed {
-            echo "NOTIFICATION: Pipeline result changed from the previous build to ${currentBuild.currentResult}."
+            echo 'BUILD STATUS CHANGED: Compare this result with the previous build.'
         }
     }
 }
