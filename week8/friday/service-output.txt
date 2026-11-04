@@ -19,4 +19,6 @@ Address:	10.96.0.10:53
 Name:	kk-payments-service.default.svc.cluster.local
 Address: 10.99.54.189
 
-{"status":"healthy","service":"kk-payments","version":"1.0.0"}
+{"status":"healthy","service":"kk-payments","version":"1.0.0"}===== FINAL VERSION VERIFICATION =====
+2026-11-04T21:21:32+03:00
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
