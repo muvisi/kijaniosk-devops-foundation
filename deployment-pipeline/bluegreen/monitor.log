@@ -1,0 +1,9 @@
+[2026-11-05T07:33:03+03:00] [MONITOR START] baseline=blue confidence_window=60s
+[2026-11-05T07:33:06+03:00] [MONITOR] Switch detected: blue -> green
+[2026-11-05T07:33:06+03:00] [MONITOR OK] {"status":"healthy","service":"kk-payments","version":"v1.4.0"}
+[2026-11-05T07:33:11+03:00] [MONITOR WARN] failure=1 proxy=
+[2026-11-05T07:33:16+03:00] [MONITOR WARN] failure=2 proxy=
+[2026-11-05T07:33:16+03:00] [MONITOR FAIL] ROLLBACK TRIGGERED
+[2026-11-05T07:33:16+03:00] Rollback from green to blue
+[2026-11-05T07:33:17+03:00] SWITCH OK: green -> blue; proxy={"status":"healthy","service":"kk-payments","version":"v1.3.0"}
+[2026-11-05T07:33:17+03:00] [MONITOR] Rollback complete: {"status":"healthy","service":"kk-payments","version":"v1.3.0"}

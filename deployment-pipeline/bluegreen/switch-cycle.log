@@ -1,0 +1,36 @@
+===== BLUE/GREEN SWITCH EVIDENCE =====
+Timestamp: 2026-11-05T07:23:32+03:00
+
+===== BEFORE SWITCH =====
+Active: blue
+Previous: green
+{"status":"healthy","service":"kk-payments","version":"v1.3.0"}
+
+===== SWITCH TO GREEN =====
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Unexpected proxy version: {"status":"healthy","service":"kk-payments","version":"v1.3.0"}; restored prior config
+
+===== AFTER SWITCH =====
+Timestamp: 2026-11-05T07:23:32+03:00
+Active: blue
+Previous: green
+/etc/nginx/kijanikiosk/blue.conf
+{"status":"healthy","service":"kk-payments","version":"v1.3.0"}
+===== BLUE/GREEN SWITCH RETEST =====
+2026-11-05T07:25:37+03:00
+===== BEFORE =====
+blue
+{"status":"healthy","service":"kk-payments","version":"v1.3.0"}
+===== SWITCHING TO GREEN =====
+[2026-11-05T07:25:38+03:00] SWITCH OK: blue -> green; proxy={"status":"healthy","service":"kk-payments","version":"v1.4.0"}
+===== AFTER =====
+2026-11-05T07:25:38+03:00
+Active:
+green
+Previous:
+blue
+Nginx upstream:
+/etc/nginx/kijanikiosk/green.conf
+Proxy health:
+{"status":"healthy","service":"kk-payments","version":"v1.4.0"}
