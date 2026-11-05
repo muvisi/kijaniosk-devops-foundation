@@ -2,7 +2,8 @@ DEPRECATED: The legacy builder is deprecated and will be removed in a future rel
             Install the buildx component to build images with BuildKit:
             https://docs.docker.com/go/buildx/
 
-Sending build context to Docker daemon  8.391kB
+Sending build context to Docker daemon  8.391kB
+
 Step 1/18 : FROM node:18-alpine AS builder
  ---> 8d6421d663b4
 Step 2/18 : WORKDIR /app
