@@ -1,0 +1,29 @@
+===== BUILD VERIFICATION =====
+2026-11-04T21:02:50+03:00
+===== IMAGE SIZE =====
+44.93 MB
+===== CONTAINER USER =====
+kijani
+===== TYPESCRIPT COMPILER =====
+PASS: tsc absent
+===== HEALTH STATUS =====
+healthy
+===== HEALTH ENDPOINT =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0"}
+
+===== FRESH NO-CACHE BUILD =====
+2026-11-05T07:09:12+03:00
+
+===== BUILD LOG VERIFICATION =====
+Step 1/18 : FROM node:18-alpine AS builder
+Successfully built 6cd87d5e389f
+Successfully tagged kk-payments:week8-verified
+
+===== IMAGE SIZE =====
+44928998 bytes
+
+===== CONTAINER USER =====
+kijani
+
+===== TYPESCRIPT COMPILER =====
+PASS: tsc absent

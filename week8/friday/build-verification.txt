@@ -1,0 +1,12 @@
+===== BUILD VERIFICATION =====
+2026-11-04T21:02:50+03:00
+===== IMAGE SIZE =====
+44.93 MB
+===== CONTAINER USER =====
+kijani
+===== TYPESCRIPT COMPILER =====
+PASS: tsc absent
+===== HEALTH STATUS =====
+healthy
+===== HEALTH ENDPOINT =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0"}

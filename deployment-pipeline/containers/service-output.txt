@@ -1,0 +1,16 @@
+=== Kubernetes Service Verification ===
+Verified at: 2026-11-05T04:05:29Z
+
+=== Service ===
+NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+kk-payments-service   NodePort   10.99.54.189   <none>        3001:30001/TCP   9h
+
+=== Endpoints ===
+NAME                        ADDRESSTYPE   PORTS   ENDPOINTS               AGE
+kk-payments-service-wrrbj   IPv4          3001    10.244.0.7,10.244.0.8   9h
+
+=== External NodePort Health ===
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
+
+=== Internal DNS Health ===
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
