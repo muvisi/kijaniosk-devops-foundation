@@ -30,6 +30,7 @@ pipeline {
     environment {
         IMAGE_REPO = 'ghcr.io/muvisi/kk-payments'
         STAGING_NAMESPACE = 'kijani-staging'
+        PRODUCTION_HEALTH_URL = 'http://192.168.49.2:30001/health'
         KUBECONFIG = '/etc/kijanikiosk/jenkins/kubeconfig'
     }
 
