@@ -1,0 +1,79 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.391kB
+
+Step 1/18 : FROM node:18-alpine AS builder
+ ---> 8d6421d663b4
+Step 2/18 : WORKDIR /app
+ ---> Running in d6d6208d121e
+ ---> Removed intermediate container d6d6208d121e
+ ---> c3456a6be150
+Step 3/18 : COPY package*.json ./
+ ---> 146772f2b3aa
+Step 4/18 : RUN npm ci
+ ---> Running in 6a9173543dd5
+
+added 3 packages, and audited 4 packages in 3s
+
+found 0 vulnerabilities
+[91mnpm notice
+npm notice New major version of npm available! 10.8.2 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice
+[0m ---> Removed intermediate container 6a9173543dd5
+ ---> 73d9cb0a442e
+Step 5/18 : COPY tsconfig.json ./
+ ---> 583f1cab931d
+Step 6/18 : COPY src ./src
+ ---> 4dd361bac26e
+Step 7/18 : RUN npm run build
+ ---> Running in 7c8ee51b3c48
+
+> kk-payments@1.0.0 build
+> tsc
+
+ ---> Removed intermediate container 7c8ee51b3c48
+ ---> e7713e93ef7f
+Step 8/18 : FROM node:18-alpine AS production
+ ---> 8d6421d663b4
+Step 9/18 : WORKDIR /app
+ ---> Running in 57d74530d4d0
+ ---> Removed intermediate container 57d74530d4d0
+ ---> be228cdc4349
+Step 10/18 : RUN addgroup -S kijani &&     adduser -S kijani -G kijani
+ ---> Running in 31775854d8bb
+ ---> Removed intermediate container 31775854d8bb
+ ---> ddef45e76217
+Step 11/18 : COPY --from=builder --chown=kijani:kijani     /app/dist ./dist
+ ---> 960459fd74a7
+Step 12/18 : COPY --from=builder --chown=kijani:kijani     /app/package.json ./package.json
+ ---> f7e16ae9b2a4
+Step 13/18 : ENV NODE_ENV=production
+ ---> Running in 899f8676f2c7
+ ---> Removed intermediate container 899f8676f2c7
+ ---> e4615e7f6a10
+Step 14/18 : ENV PORT=3001
+ ---> Running in 84b688b1178b
+ ---> Removed intermediate container 84b688b1178b
+ ---> e026941ccab9
+Step 15/18 : USER kijani
+ ---> Running in f40f94250f58
+ ---> Removed intermediate container f40f94250f58
+ ---> 733ebe82062e
+Step 16/18 : EXPOSE 3001
+ ---> Running in 8ca627ce155d
+ ---> Removed intermediate container 8ca627ce155d
+ ---> e2bd56b3d695
+Step 17/18 : HEALTHCHECK --interval=10s     --timeout=5s     --start-period=30s     --retries=3     CMD wget -qO- http://127.0.0.1:3001/health || exit 1
+ ---> Running in a68e52c2297f
+ ---> Removed intermediate container a68e52c2297f
+ ---> b85b7085439a
+Step 18/18 : CMD ["node", "dist/index.js"]
+ ---> Running in 1027d746f85d
+ ---> Removed intermediate container 1027d746f85d
+ ---> 6cd87d5e389f
+Successfully built 6cd87d5e389f
+Successfully tagged kk-payments:week8-verified

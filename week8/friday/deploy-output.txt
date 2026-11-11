@@ -1,0 +1,25 @@
+===== DEPLOYMENT VERIFICATION =====
+2026-11-04T21:10:34+03:00
+===== DEPLOYMENT =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           78s
+===== PODS =====
+NAME                           READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+kk-payments-75d885b684-22fw8   1/1     Running   0          78s   10.244.0.4   minikube   <none>           <none>
+kk-payments-75d885b684-9njp4   1/1     Running   0          78s   10.244.0.3   minikube   <none>           <none>
+===== DEPLOYED IMAGE =====
+ghcr.io/muvisi/kk-payments:1.0.0-7e80d7d
+===== REGISTRY SECRET =====
+NAME                          TYPE                             DATA   AGE
+kijani-registry-credentials   kubernetes.io/dockerconfigjson   1      111s
+===== FINAL DEPLOYMENT =====
+2026-11-04T21:21:23+03:00
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           12m
+NAME                           READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+kk-payments-86f87d46d5-6m9df   1/1     Running   0          23s   10.244.0.7   minikube   <none>           <none>
+kk-payments-86f87d46d5-jz6qt   1/1     Running   0          15s   10.244.0.8   minikube   <none>           <none>
+===== IMAGE =====
+ghcr.io/muvisi/kk-payments:1.0.0-b563111
+===== HEALTH =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}

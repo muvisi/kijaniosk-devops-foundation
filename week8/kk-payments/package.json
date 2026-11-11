@@ -1,0 +1,17 @@
+{
+  "name": "kk-payments",
+  "version": "1.0.0",
+  "description": "KijaniKiosk Payments Service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.130",
+    "typescript": "^5.9.3"
+  }
+}

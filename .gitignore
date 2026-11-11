@@ -1,0 +1,28 @@
+
+# Node.js
+node_modules/
+npm-debug.log*
+.env
+.env.*
+!**/.env.example
+
+# Generated application files
+week8/kk-payments/dist/
+
+# Editor files
+*.swp
+*.swo
+
+# Credentials
+.docker/
+.kube/
+
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfplan
+
+# Credentials
+*.tfvars
+!*.tfvars.example

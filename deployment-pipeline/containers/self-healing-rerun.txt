@@ -1,0 +1,25 @@
+===== KUBERNETES SELF-HEALING TEST =====
+deployment "kk-payments" successfully rolled out
+Pod selected for deletion: kk-payments-75d885b684-22fw8
+===== BEFORE DELETION =====
+NAME                           READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+kk-payments-75d885b684-22fw8   1/1     Running   0          4m34s   10.244.0.4   minikube   <none>           <none>
+kk-payments-75d885b684-9njp4   1/1     Running   0          4m34s   10.244.0.3   minikube   <none>           <none>
+T0: 2026-11-04T21:13:50+03:00
+pod "kk-payments-75d885b684-22fw8" deleted from default namespace
+===== WAITING FOR RECOVERY =====
+Check 1: Ready replicas=1
+Check 2: Ready replicas=1
+Check 3: Ready replicas=1
+Check 4: Ready replicas=1
+Check 5: Ready replicas=2
+T1: 2026-11-04T21:13:58+03:00
+Recovery time: 8 seconds
+===== AFTER RECOVERY =====
+NAME                           READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+kk-payments-75d885b684-5l9n8   1/1     Running   0          8s      10.244.0.6   minikube   <none>           <none>
+kk-payments-75d885b684-9njp4   1/1     Running   0          4m42s   10.244.0.3   minikube   <none>           <none>
+===== DEPLOYMENT STATUS =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           4m42s
+PASS: Kubernetes restored two ready replicas

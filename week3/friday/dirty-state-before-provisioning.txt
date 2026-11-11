@@ -1,0 +1,44 @@
+=== SIMULATED DIRTY STATE ===
+Timestamp: 2026-10-02T18:36:52+03:00
+
+=== USERS ===
+kk-api:x:997:1001::/home/kk-api:/usr/sbin/nologin
+kk-payments:x:994:1001::/home/kk-payments:/usr/sbin/nologin
+
+=== GROUP ===
+kijanikiosk:x:1001:
+
+=== PERMISSIONS ===
+drwxrwxrwx 2 root root 4096 Oct  2 18:35 /opt/kijanikiosk/config
+drwxrwxr-x+ 2 root root 4096 Oct  2 18:35 /opt/kijanikiosk/shared/logs
+
+=== ACL ===
+getfacl: Removing leading '/' from absolute path names
+# file: opt/kijanikiosk/shared/logs
+# owner: root
+# group: root
+user::rwx
+user:kk-api:rwx
+group::r-x
+mask::rwx
+other::r-x
+default:user::rwx
+default:user:kk-api:rwx
+default:group::r-x
+default:mask::rwx
+default:other::r-x
+
+
+=== FIREWALL ===
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 22/tcp                     ALLOW IN    Anywhere                   # Temporary SSH access
+[ 2] 3001                       DENY IN     Anywhere                   # Simulated stale payments rule
+[ 3] 22/tcp (v6)                ALLOW IN    Anywhere (v6)              # Temporary SSH access
+[ 4] 3001 (v6)                  DENY IN     Anywhere (v6)              # Simulated stale payments rule
+
+
+=== PACKAGE HOLDS ===
+curl

@@ -1,0 +1,24 @@
+===== SERVICE VERIFICATION =====
+2026-11-04T21:12:14+03:00
+===== SERVICE =====
+NAME                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+kk-payments-service   NodePort   10.99.54.189   <none>        3001:30001/TCP   64s
+===== ENDPOINTS =====
+NAME                        ADDRESSTYPE   PORTS   ENDPOINTS               AGE
+kk-payments-service-wrrbj   IPv4          3001    10.244.0.4,10.244.0.3   64s
+===== MINIKUBE IP =====
+192.168.49.2
+===== NODEPORT HEALTH CHECK =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0"}
+===== INTERNAL DNS VERIFICATION =====
+2026-11-04T21:12:42+03:00
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+
+Name:	kk-payments-service.default.svc.cluster.local
+Address: 10.99.54.189
+
+{"status":"healthy","service":"kk-payments","version":"1.0.0"}===== FINAL VERSION VERIFICATION =====
+2026-11-04T21:21:32+03:00
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}

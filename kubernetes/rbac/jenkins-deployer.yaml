@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins-deployer
+  namespace: kijani-staging
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: jenkins-deployer
+  namespace: kijani-staging
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/status"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: ["apps"]
+    resources: ["replicasets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create", "delete"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jenkins-deployer
+  namespace: kijani-staging
+subjects:
+  - kind: ServiceAccount
+    name: jenkins-deployer
+    namespace: kijani-staging
+roleRef:
+  kind: Role
+  name: jenkins-deployer
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: jenkins-production-deployer
+  namespace: default
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    resourceNames: ["kk-payments"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["replicasets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jenkins-production-deployer
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: jenkins-deployer
+    namespace: kijani-staging
+roleRef:
+  kind: Role
+  name: jenkins-production-deployer
+  apiGroup: rbac.authorization.k8s.io
