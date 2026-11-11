@@ -1,0 +1,19 @@
+KIJANIKIOSK DEPLOYMENT VERIFICATION
+2026-11-12T00:04:52+03:00
+===== STAGING =====
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/kk-payments   2/2     2            2           41m
+
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/kk-payments-b78f8c8cc-6d6gd   1/1     Running   0          36m
+pod/kk-payments-b78f8c8cc-t6tmb   1/1     Running   0          36m
+===== PRODUCTION =====
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/kk-payments   2/2     2            2           7d2h
+
+NAME                               READY   STATUS    RESTARTS      AGE
+pod/kk-payments-86f87d46d5-6m9df   1/1     Running   1 (65m ago)   7d2h
+pod/kk-payments-86f87d46d5-jz6qt   1/1     Running   1 (65m ago)   7d2h
+===== IMAGES =====
+ghcr.io/muvisi/kk-payments:1.0.0-b563111
+ghcr.io/muvisi/kk-payments:1.0.0-b563111
