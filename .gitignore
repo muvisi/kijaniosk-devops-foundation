@@ -16,3 +16,13 @@ week8/kk-payments/dist/
 # Credentials
 .docker/
 .kube/
+
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfplan
+
+# Credentials
+*.tfvars
+!*.tfvars.example

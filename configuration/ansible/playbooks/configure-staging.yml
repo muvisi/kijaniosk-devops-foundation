@@ -1,0 +1,48 @@
+---
+- name: Configure KijaniKiosk staging
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Verify staging namespace exists
+      ansible.builtin.command:
+        cmd: kubectl get namespace kijani-staging
+      changed_when: false
+
+    - name: Apply staging ConfigMap
+      ansible.builtin.command:
+        cmd: kubectl apply -f -
+        stdin: |
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: kk-payments-config
+            namespace: kijani-staging
+          data:
+            NODE_ENV: "staging"
+            PORT: "3001"
+            DB_HOST: "postgres-staging"
+      register: configmap_result
+      changed_when: "'created' in configmap_result.stdout or 'configured' in configmap_result.stdout"
+
+    - name: Apply staging resource limits
+      ansible.builtin.command:
+        cmd: kubectl apply -f -
+        stdin: |
+          apiVersion: v1
+          kind: LimitRange
+          metadata:
+            name: staging-default-limits
+            namespace: kijani-staging
+          spec:
+            limits:
+              - type: Container
+                defaultRequest:
+                  cpu: "100m"
+                  memory: "128Mi"
+                default:
+                  cpu: "500m"
+                  memory: "512Mi"
+      register: limit_result
+      changed_when: "'created' in limit_result.stdout or 'configured' in limit_result.stdout"
