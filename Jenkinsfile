@@ -30,6 +30,7 @@ pipeline {
     environment {
         IMAGE_REPO = 'ghcr.io/muvisi/kk-payments'
         STAGING_NAMESPACE = 'kijani-staging'
+        KUBECONFIG = '/etc/kijanikiosk/jenkins/kubeconfig'
     }
 
     stages {
@@ -71,12 +72,7 @@ pipeline {
             }
 
             steps {
-                withCredentials([
-                    file(
-                        credentialsId: 'kijani-kubeconfig',
-                        variable: 'KUBECONFIG'
-                    )
-                ]) {
+                withEnv(['KUBECONFIG=/etc/kijanikiosk/jenkins/kubeconfig']) {
                     sh '''
                         set -eu
 
@@ -102,12 +98,7 @@ pipeline {
 
         stage('Staging Smoke Test') {
             steps {
-                withCredentials([
-                    file(
-                        credentialsId: 'kijani-kubeconfig',
-                        variable: 'KUBECONFIG'
-                    )
-                ]) {
+                withEnv(['KUBECONFIG=/etc/kijanikiosk/jenkins/kubeconfig']) {
                     sh '''
                         set -eu
 
@@ -163,12 +154,7 @@ pipeline {
                     }
                 }
 
-                withCredentials([
-                    file(
-                        credentialsId: 'kijani-kubeconfig',
-                        variable: 'KUBECONFIG'
-                    )
-                ]) {
+                withEnv(['KUBECONFIG=/etc/kijanikiosk/jenkins/kubeconfig']) {
                     sh '''
                         set -eu
 
