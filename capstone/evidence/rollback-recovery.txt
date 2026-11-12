@@ -1,0 +1,22 @@
+KIJANIKIOSK — ROLLBACK RECOVERY
+2026-11-12T00:33:07+03:00
+
+===== DEPLOYMENT =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   1/1     1            1           7m50s
+
+===== PODS =====
+NAME                           READY   STATUS    RESTARTS   AGE
+kk-payments-75bf86bb78-4pd2k   1/1     Running   0          3m44s
+
+===== RESTORED IMAGE =====
+ghcr.io/muvisi/kk-payments:1.0.0-b563111
+
+===== ROLLOUT HISTORY =====
+deployment.apps/kk-payments 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+4         <none>
+5         <none>
+

@@ -1,0 +1,20 @@
+===== AUTOMATED ROLLBACK FINAL VERIFICATION =====
+2026-11-12T08:38:15+03:00
+
+===== TEST DEPLOYMENT =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   1/1     1            1           8h
+
+===== TEST IMAGE AND VERSION =====
+ghcr.io/muvisi/kk-payments:1.0.0-b563111
+1.0.0-b563111
+
+===== TEST HTTP HEALTH =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
+
+===== PRODUCTION DEPLOYMENT =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           7d11h
+
+===== PRODUCTION HTTP HEALTH =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
