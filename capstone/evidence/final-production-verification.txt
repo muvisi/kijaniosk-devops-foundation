@@ -1,0 +1,14 @@
+KIJANIKIOSK CAPSTONE — FINAL PRODUCTION VERIFICATION
+2026-11-12T09:03:21+03:00
+===== GIT COMMIT =====
+2e03d62 Merge pull request #6 from muvisi/feature/capstone-automated-rollback
+===== PRODUCTION =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           7d11h
+===== STAGING =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   2/2     2            2           9h
+===== PRODUCTION IMAGE =====
+ghcr.io/muvisi/kk-payments:1.0.0-b563111
+===== PRODUCTION HEALTH =====
+{"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
