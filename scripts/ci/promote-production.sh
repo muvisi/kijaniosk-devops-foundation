@@ -4,7 +4,7 @@ set -Eeuo pipefail
 IMAGE="${1:?Image reference required}"
 VERSION="${2:?Version required}"
 
-NAMESPACE="default"
+NAMESPACE="${DEPLOY_NAMESPACE:-default}"
 DEPLOYMENT="kk-payments"
 CONTAINER="kk-payments"
 HEALTH_URL="${PRODUCTION_HEALTH_URL:?PRODUCTION_HEALTH_URL required}"

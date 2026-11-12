@@ -1,0 +1,13 @@
+Current image: ghcr.io/muvisi/kk-payments:1.0.0-b563111
+Target image:  ghcr.io/muvisi/kk-payments:rollback-test-invalid
+deployment.apps/kk-payments image updated
+deployment.apps/kk-payments env updated
+Waiting for deployment "kk-payments" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kk-payments" rollout to finish: 1 old replicas are pending termination...
+error: timed out waiting for the condition
+===== ROLLING BACK PRODUCTION =====
+deployment.apps/kk-payments image updated
+deployment.apps/kk-payments env updated
+deployment "kk-payments" successfully rolled out
+HTTP health verification passed: {"status":"healthy","service":"kk-payments","version":"1.0.0-b563111"}
+Rollback attempted. Inspect production before retrying.

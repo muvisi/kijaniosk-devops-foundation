@@ -1,0 +1,36 @@
+===== FAILED DEPLOYMENT TEST =====
+2026-11-12T00:32:03+03:00
+
+===== DEPLOYMENT =====
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+kk-payments   1/1     1            1           6m46s
+
+===== POD STATUS =====
+NAME                           READY   STATUS             RESTARTS   AGE
+kk-payments-644f764c4-g9gtb    0/1     ImagePullBackOff   0          83s
+kk-payments-75bf86bb78-4pd2k   1/1     Running            0          2m40s
+
+===== DEPLOYMENT IMAGE =====
+ghcr.io/muvisi/kk-payments:rollback-test-invalid
+
+===== EVENTS =====
+2m55s       Warning   Failed              pod/kk-payments-7dfdc9c9fc-czvlv    Error: ImagePullBackOff
+2m43s       Normal    BackOff             pod/kk-payments-7dfdc9c9fc-czvlv    Back-off pulling image "ghcr.io/muvisi/kk-payments:1.0.0-b563111"
+2m43s       Warning   Failed              pod/kk-payments-665c8df898-k6j2x    Error: ImagePullBackOff
+2m43s       Normal    BackOff             pod/kk-payments-665c8df898-k6j2x    Back-off pulling image "ghcr.io/muvisi/kk-payments:1.0.0-b563111"
+2m40s       Normal    SuccessfulCreate    replicaset/kk-payments-75bf86bb78   Created pod: kk-payments-75bf86bb78-4pd2k
+2m40s       Normal    ScalingReplicaSet   deployment/kk-payments              Scaled down replica set kk-payments-665c8df898 from 1 to 0
+2m40s       Normal    SuccessfulDelete    replicaset/kk-payments-665c8df898   Deleted pod: kk-payments-665c8df898-k6j2x
+2m40s       Normal    ScalingReplicaSet   deployment/kk-payments              Scaled up replica set kk-payments-75bf86bb78 from 0 to 1
+2m39s       Normal    Started             pod/kk-payments-75bf86bb78-4pd2k    Container started
+2m39s       Normal    Created             pod/kk-payments-75bf86bb78-4pd2k    Container created
+2m39s       Normal    ScalingReplicaSet   deployment/kk-payments              Scaled down replica set kk-payments-7dfdc9c9fc from 1 to 0
+2m39s       Normal    SuccessfulDelete    replicaset/kk-payments-7dfdc9c9fc   Deleted pod: kk-payments-7dfdc9c9fc-czvlv
+2m39s       Normal    Pulled              pod/kk-payments-75bf86bb78-4pd2k    Container image "ghcr.io/muvisi/kk-payments:1.0.0-b563111" already present on machine and can be accessed by the pod
+83s         Normal    SuccessfulCreate    replicaset/kk-payments-644f764c4    Created pod: kk-payments-644f764c4-g9gtb
+83s         Normal    ScalingReplicaSet   deployment/kk-payments              Scaled up replica set kk-payments-644f764c4 from 0 to 1
+40s         Normal    Pulling             pod/kk-payments-644f764c4-g9gtb     Pulling image "ghcr.io/muvisi/kk-payments:rollback-test-invalid"
+38s         Warning   Failed              pod/kk-payments-644f764c4-g9gtb     Failed to pull image "ghcr.io/muvisi/kk-payments:rollback-test-invalid": rpc error: code = NotFound desc = failed to pull and unpack image "ghcr.io/muvisi/kk-payments:rollback-test-invalid": failed to resolve reference "ghcr.io/muvisi/kk-payments:rollback-test-invalid": ghcr.io/muvisi/kk-payments:rollback-test-invalid: not found
+38s         Warning   Failed              pod/kk-payments-644f764c4-g9gtb     Error: ErrImagePull
+12s         Normal    BackOff             pod/kk-payments-644f764c4-g9gtb     Back-off pulling image "ghcr.io/muvisi/kk-payments:rollback-test-invalid"
+12s         Warning   Failed              pod/kk-payments-644f764c4-g9gtb     Error: ImagePullBackOff
